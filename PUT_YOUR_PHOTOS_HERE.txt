@@ -1,0 +1,1 @@
+Replace photo1.jpg, photo2.jpg, and photo3.jpg with your own images. The included SVG placeholders are visual references only; missing JPGs are handled automatically.

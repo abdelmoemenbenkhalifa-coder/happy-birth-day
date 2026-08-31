@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070812">
+  <meta name="description" content="A cinematic interactive birthday gift.">
+  <title>A Little Something For You</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app" class="app">
+    <canvas id="particleCanvas" aria-hidden="true"></canvas>
+    <div class="ambient ambient-a" aria-hidden="true"></div>
+    <div class="ambient ambient-b" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="brand">✦ <span>for you</span></div>
+      <button id="musicToggle" class="icon-btn" type="button" aria-label="Play background music" aria-pressed="false" title="Music">♪</button>
+    </header>
+
+    <main id="experience" class="experience">
+      <!-- 1. INTRO -->
+      <section class="screen is-active" data-screen="intro" aria-labelledby="introTitle">
+        <div class="hero-orb" aria-hidden="true"><span></span></div>
+        <div class="eyebrow">A tiny surprise</div>
+        <h1 id="introTitle">I made something<br><em>for you...</em></h1>
+        <p class="intro-copy">Take a breath. There is a little story waiting behind this door.</p>
+        <button class="primary-btn" id="openBtn" type="button">
+          <span>Open it</span><b>✦</b>
+        </button>
+        <div class="scroll-hint" aria-hidden="true"><span></span></div>
+      </section>
+
+      <!-- 2. GIFT -->
+      <section class="screen" data-screen="gift" aria-labelledby="giftTitle">
+        <div class="section-kicker">A little mystery</div>
+        <h2 id="giftTitle">Something is waiting for you.</h2>
+        <div class="gift-stage">
+          <div class="gift-glow"></div>
+          <button id="giftBox" class="gift" type="button" aria-label="Open the gift">
+            <span class="gift-lid"></span><span class="gift-body"></span>
+            <span class="gift-ribbon-v"></span><span class="gift-ribbon-h"></span>
+            <span class="gift-bow bow-left"></span><span class="gift-bow bow-right"></span>
+          </button>
+        </div>
+        <p class="hint" id="giftHint">Tap the gift ✨</p>
+      </section>
+
+      <!-- 3. REVEAL -->
+      <section class="screen" data-screen="reveal" aria-labelledby="birthdayTitle">
+        <div class="celebration-ring" aria-hidden="true"></div>
+        <div class="eyebrow">Today deserves a little sparkle</div>
+        <h2 id="birthdayTitle" class="birthday-title">Happy Birthday</h2>
+        <p class="lead" id="birthdaySubtitle">Today is your day.</p>
+        <div class="mini-stars" aria-hidden="true">✦　·　✧　·　✦</div>
+        <button class="ghost-btn next-btn" type="button" data-next="message">Continue <span>→</span></button>
+      </section>
+
+      <!-- 4. MESSAGE -->
+      <section class="screen" data-screen="message" aria-labelledby="messageTitle">
+        <div class="letter-wrap">
+          <div class="letter">
+            <div class="letter-seal" aria-hidden="true">✦</div>
+            <div class="section-kicker">A few words</div>
+            <h2 id="messageTitle">There is something<br>I want to tell you...</h2>
+            <button id="readMessageBtn" class="primary-btn" type="button"><span>Read the message</span><b>✉</b></button>
+            <div id="messageContent" class="message-content" aria-live="polite" hidden></div>
+          </div>
+        </div>
+        <button class="ghost-btn next-btn message-next" type="button" data-next="memories" hidden>Keep going <span>→</span></button>
+      </section>
+
+      <!-- 5. MEMORIES -->
+      <section class="screen" data-screen="memories" aria-labelledby="memoriesTitle">
+        <div class="section-kicker">A little nostalgia</div>
+        <h2 id="memoriesTitle">Moments worth keeping.</h2>
+        <div class="gallery" id="gallery" tabindex="0" aria-label="Memory gallery">
+          <button class="gallery-arrow prev" id="prevPhoto" type="button" aria-label="Previous memory">‹</button>
+          <div class="photo-frame" id="photoFrame">
+            <img id="memoryImage" alt="" loading="lazy">
+            <div class="photo-overlay"></div>
+            <div class="photo-caption">
+              <span id="memoryDate"></span>
+              <strong id="memoryCaption"></strong>
+            </div>
+          </div>
+          <button class="gallery-arrow next" id="nextPhoto" type="button" aria-label="Next memory">›</button>
+          <div class="gallery-dots" id="galleryDots" aria-label="Gallery navigation"></div>
+        </div>
+        <button class="ghost-btn next-btn" type="button" data-next="constellation">Next chapter <span>→</span></button>
+      </section>
+
+      <!-- 6. CONSTELLATION -->
+      <section class="screen constellation-screen" data-screen="constellation" aria-labelledby="constellationTitle">
+        <canvas id="constellationCanvas" aria-label="Interactive constellation"></canvas>
+        <div class="constellation-ui">
+          <div class="section-kicker">Look a little closer</div>
+          <h2 id="constellationTitle">Connect the stars.</h2>
+          <p id="constellationHint">Touch or move across the sky. Something is hiding between them.</p>
+          <div class="constellation-message" id="constellationMessage" aria-live="polite"></div>
+          <button class="ghost-btn next-btn" type="button" data-next="cake">Make a wish <span>→</span></button>
+        </div>
+      </section>
+
+      <!-- 7. CAKE -->
+      <section class="screen cake-screen" data-screen="cake" aria-labelledby="cakeTitle">
+        <div class="cake-sky" aria-hidden="true"></div>
+        <div class="section-kicker">One last little ritual</div>
+        <h2 id="cakeTitle">Make a wish ✨</h2>
+        <p class="cake-sub">Tap every candle when you're ready.</p>
+        <div class="cake-wrap" id="cakeWrap">
+          <div class="cake">
+            <div class="flame" data-candle="1"></div><div class="flame" data-candle="2"></div><div class="flame" data-candle="3"></div>
+            <button class="candle c1" data-candle="1" aria-label="Blow out candle 1"></button>
+            <button class="candle c2" data-candle="2" aria-label="Blow out candle 2"></button>
+            <button class="candle c3" data-candle="3" aria-label="Blow out candle 3"></button>
+            <div class="icing"></div>
+            <div class="cake-layer top"></div><div class="cake-layer middle"></div><div class="cake-layer bottom"></div>
+            <div class="plate"></div>
+          </div>
+        </div>
+        <div class="wish-message" id="wishMessage" aria-live="polite"></div>
+        <button class="ghost-btn next-btn cake-next" type="button" data-next="final" hidden>Celebrate <span>→</span></button>
+      </section>
+
+      <!-- 8. FINAL -->
+      <section class="screen final-screen" data-screen="final" aria-labelledby="finalTitle">
+        <canvas id="fireworksCanvas" aria-hidden="true"></canvas>
+        <div class="final-content">
+          <div class="final-kicker">And now...</div>
+          <h2 id="finalTitle">HAPPY<br><span>BIRTHDAY</span></h2>
+          <div class="final-name" id="finalName"></div>
+          <p id="finalMessage">Here's to another amazing year.</p>
+          <div class="final-sparkle" aria-hidden="true">✦ ✧ ✦</div>
+          <button id="replayBtn" class="primary-btn" type="button"><span>Replay the experience</span><b>↻</b></button>
+        </div>
+      </section>
+    </main>
+
+    <nav class="progress" aria-label="Experience progress">
+      <button type="button" data-go="intro" aria-label="Intro" class="active"></button>
+      <button type="button" data-go="gift" aria-label="Gift"></button>
+      <button type="button" data-go="reveal" aria-label="Birthday"></button>
+      <button type="button" data-go="message" aria-label="Message"></button>
+      <button type="button" data-go="memories" aria-label="Memories"></button>
+      <button type="button" data-go="constellation" aria-label="Constellation"></button>
+      <button type="button" data-go="cake" aria-label="Cake"></button>
+      <button type="button" data-go="final" aria-label="Final celebration"></button>
+    </nav>
+  </div>
+  <audio id="birthdayAudio" preload="none" loop></audio>
+  <script src="script.js"></script>
+</body>
+</html>
